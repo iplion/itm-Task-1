@@ -1,31 +1,42 @@
 package jm.task.core.jdbc.service;
 
+import jm.task.core.jdbc.dao.UserDaoHibernateImpl;
 import jm.task.core.jdbc.model.User;
 
 import java.util.List;
 
 public class UserServiceImpl implements UserService {
-    public void createUsersTable() {
+    private final UserDaoHibernateImpl userDaoHibernateImpl;
 
+    public UserServiceImpl() {
+        try {
+            userDaoHibernateImpl = new UserDaoHibernateImpl();
+        } catch (Exception e) {
+            throw new RuntimeException("Error connection to database");
+        }
+    }
+
+    public void createUsersTable() {
+        userDaoHibernateImpl.createUsersTable();
     }
 
     public void dropUsersTable() {
-
+        userDaoHibernateImpl.dropUsersTable();
     }
 
     public void saveUser(String name, String lastName, byte age) {
-
+        userDaoHibernateImpl.saveUser(name, lastName, age);
     }
 
     public void removeUserById(long id) {
-
+        userDaoHibernateImpl.removeUserById(id);
     }
 
     public List<User> getAllUsers() {
-        return null;
+        return userDaoHibernateImpl.getAllUsers();
     }
 
     public void cleanUsersTable() {
-
+        userDaoHibernateImpl.cleanUsersTable();
     }
 }

@@ -1,0 +1,70 @@
+services:
+#  sms-cloud-auth:
+#    container_name: sms-cloud-auth
+#    build:
+#      context: ./sms-cloud-auth
+#      dockerfile: Dockerfile
+#    volumes:
+##      - ./sms-cloud-auth/target/sms-cloud-auth.jar:/app/app.jar
+#      - ./sms-cloud-auth/logs/sms-cloud-auth.log:/app/logs/sms-cloud-auth.log
+##      - ./sms-cloud-auth/logs/cron.log:/var/log/cron.log
+#    ports:
+#      - "8081:8081"
+#    networks:
+#      - sms-cloud
+#    depends_on:
+#      - sms-cloud-auth-db
+
+  pdb:
+    container_name: pdb
+    image: postgres:16.2-alpine3.19
+    environment:
+      POSTGRES_DB: "itm-db"
+      POSTGRES_USER: "user"
+      POSTGRES_PASSWORD: "password"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    volumes:
+      - itm-db:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d itm-db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - itm-network
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4:8
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "iplion@mail.ru"
+      PGADMIN_DEFAULT_PASSWORD: "password"
+    volumes:
+      - itm-pgadmin:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    networks:
+      - itm-network
+    depends_on:
+      - pdb
+
+volumes:
+  itm-db:
+    driver: local
+    driver_opts:
+      type: "none"
+      o: "bind"
+      device: ./pdb
+  itm-pgadmin:
+    driver: local
+    driver_opts:
+      type: "none"
+      o: "bind"
+      device: ./pgadmin
+
+networks:
+  itm-network:
+    driver: bridge
