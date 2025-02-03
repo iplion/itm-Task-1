@@ -1,5 +1,6 @@
 package jm.task.core.jdbc.dao;
 
+import jm.task.core.jdbc.config.AppConfig;
 import jm.task.core.jdbc.model.User;
 import jm.task.core.jdbc.util.Util;
 import org.hibernate.Session;
@@ -38,16 +39,12 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public void createUsersTable() {
-        makeQuery("CREATE TABLE IF NOT EXISTS users ("
-            + "id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, "
-            + "name VARCHAR(50), "
-            + "lastName VARCHAR(50), "
-            + "age SMALLINT)");
+        makeQuery(AppConfig.getQuery("create_user_table"));
     }
 
     @Override
     public void dropUsersTable() {
-        makeQuery("DROP TABLE IF EXISTS users");
+        makeQuery(AppConfig.getQuery("drop_user_table"));
     }
 
     @Override
@@ -101,7 +98,11 @@ public class UserDaoHibernateImpl implements UserDao {
         List<User> users = new ArrayList<>();
 
         try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("FROM User", User.class).list();
+
+            return session.createQuery(
+                AppConfig.getQuery("from_user_table"),
+                User.class
+            ).list();
         } catch (Exception e) {
             System.out.println("Error retrieving users: " + e.getMessage());
         }
@@ -111,6 +112,6 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public void cleanUsersTable() {
-        makeQuery("TRUNCATE TABLE users");
+        makeQuery(AppConfig.getQuery("clean_user_table"));
     }
 }

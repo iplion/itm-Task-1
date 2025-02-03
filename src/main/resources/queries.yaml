@@ -1,0 +1,7 @@
+create_user_table: >
+  CREATE TABLE IF NOT EXISTS users
+  (id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  name VARCHAR(50), lastName VARCHAR(50), age SMALLINT)
+drop_user_table: "DROP TABLE IF EXISTS users"
+from_user_table: "FROM User"
+clean_user_table: "TRUNCATE TABLE users"

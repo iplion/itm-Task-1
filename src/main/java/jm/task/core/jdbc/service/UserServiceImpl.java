@@ -12,7 +12,7 @@ public class UserServiceImpl implements UserService {
         try {
             userDaoHibernateImpl = new UserDaoHibernateImpl();
         } catch (Exception e) {
-            throw new RuntimeException("Error connection to database");
+            throw new RuntimeException("Error connection to database", e);
         }
     }
 

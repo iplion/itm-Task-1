@@ -1,20 +1,4 @@
 services:
-#  sms-cloud-auth:
-#    container_name: sms-cloud-auth
-#    build:
-#      context: ./sms-cloud-auth
-#      dockerfile: Dockerfile
-#    volumes:
-##      - ./sms-cloud-auth/target/sms-cloud-auth.jar:/app/app.jar
-#      - ./sms-cloud-auth/logs/sms-cloud-auth.log:/app/logs/sms-cloud-auth.log
-##      - ./sms-cloud-auth/logs/cron.log:/var/log/cron.log
-#    ports:
-#      - "8081:8081"
-#    networks:
-#      - sms-cloud
-#    depends_on:
-#      - sms-cloud-auth-db
-
   pdb:
     container_name: pdb
     image: postgres:16.2-alpine3.19
